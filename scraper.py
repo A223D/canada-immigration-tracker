@@ -11,7 +11,7 @@ numbers = [os.getenv("KUSHAGRA_NUMBER")]
 
 if debug: print("I got", os.getenv("TEXT_TEST"), "as text test")
 
-if os.getenv("TEXT_TEST") == False:
+if os.getenv("TEXT_TEST") == "false" or os.getenv("TEXT_TEST") == None:
     # live
     link = "https://www.ontario.ca/page/2024-ontario-immigrant-nominee-program-updates"
     res = requests.get(link).text
