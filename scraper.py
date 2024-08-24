@@ -10,6 +10,7 @@ debug = True
 numbers = [os.getenv("KUSHAGRA_NUMBER")]
 
 if debug: print("I got", os.getenv("TEXT_TEST"), "as text test")
+if debug: print("I got type of text test as ", type(os.getenv("TEXT_TEST")))
 
 if os.getenv("TEXT_TEST") == "false" or os.getenv("TEXT_TEST") == None:
     # live
