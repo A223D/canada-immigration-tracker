@@ -1,0 +1,44 @@
+name: Poll Action
+
+run-name: Scraping oinp page and sending results
+
+on:
+    push:
+        branches:
+            - 'main'
+    schedule:
+      - cron: "27 */4 * * *"
+    workflow_dispatch:
+      inputs:
+        textBasedTest:
+          description: "Use the provided testing text file snapshot?"
+          required: true
+          default: false
+          type: boolean
+
+
+permissions:
+  contents: write
+
+jobs:
+    poller:
+        runs-on: ubuntu-latest
+        steps:
+            - name: Setting Up Environment 🖥️
+              run: echo "Starting announcer Job"
+            - name: Trying to install python 🐍
+              uses: actions/setup-python@v3
+            - name: Checkout main branch code 🧬
+              uses: actions/checkout@v4
+              with:
+                ref: main
+            - name: Install requirements for python
+              run: pip install -r requirements.txt
+            - name: Running the parsing script 🛠️
+              run: python ./scraper.py
+              env:
+                TWILIO_ACCOUNT_SID: ${{secrets.TWILIO_ACCOUNT_SID}}
+                TWILIO_AUTH_TOKEN: ${{secrets.TWILIO_AUTH_TOKEN}}
+                KUSHAGRA_NUMBER: ${{secrets.KUSHAGRA_NUMBER}}
+                FROM_NUMBER: ${{secrets.FROM_NUMBER}}
+                TEXT_TEST: ${{inputs.textBasedTest}}
