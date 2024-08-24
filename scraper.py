@@ -12,7 +12,7 @@ numbers = [os.getenv("KUSHAGRA_NUMBER")]
 if debug: print("I got", os.getenv("TEXT_TEST"), "as text test")
 if debug: print("I got type of text test as ", type(os.getenv("TEXT_TEST")))
 
-if os.getenv("TEXT_TEST") == "false" or os.getenv("TEXT_TEST") == None:
+if os.getenv("TEXT_TEST") == "false" or os.getenv("TEXT_TEST") == None or len(os.getenv("TEXT_TEST").strip()) == 0:
     # live
     link = "https://www.ontario.ca/page/2024-ontario-immigrant-nominee-program-updates"
     res = requests.get(link).text
