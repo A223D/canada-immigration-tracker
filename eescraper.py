@@ -32,17 +32,20 @@ recipients = ["KUSHAGRA_NUMBER", "MAHAK_NUMBER", "CHIRAG_SETHI_NUMBER"]
 
 if debug: print("I got", os.getenv("TEXT_TEST"), "as text test")
 if debug: print("I got type of text test as ", type(os.getenv("TEXT_TEST")))
-if debug: print("TextText evaluated as", textTest)
+if debug: print("TextTest evaluated as", textTest)
 
 soup = ""
 if not textTest:
     # live
+    if debug: print("This is a live call")
     # link = "https://www.canada.ca/en/immigration-refugees-citizenship/services/immigrate-canada/express-entry/submit-profile/rounds-invitations.html"
     link = "https://www.canada.ca/en/immigration-refugees-citizenship/corporate/mandate/policies-operational-instructions-agreements/ministerial-instructions/express-entry-rounds.html"
     options = Options()
     options.add_argument('--headless=new')
     driver = webdriver.Chrome(options=options)
     driver.get(link)
+    # WebDriverWait(driver, 10)
+    sleep(10)
     soup = BeautifulSoup(driver.page_source, 'html.parser')
     driver.close()
     driver.quit()
