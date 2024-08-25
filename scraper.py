@@ -5,14 +5,15 @@ from bs4 import BeautifulSoup, element
 from datetime import datetime
 from twilio.rest import Client
 debug = True
-# load_dotenv()
+load_dotenv()
+textTest = os.getenv("TEXT_TEST") == "false" or os.getenv("TEXT_TEST") == None or len(os.getenv("TEXT_TEST").strip()) == 0
 
-numbers = [os.getenv("KUSHAGRA_NUMBER")]
+recipients = ["KUSHAGRA_NUMBER", "MAHAK_NUMBER", "CHIRAG_SETHI_NUMBER"]
 
 if debug: print("I got", os.getenv("TEXT_TEST"), "as text test")
 if debug: print("I got type of text test as ", type(os.getenv("TEXT_TEST")))
 
-if os.getenv("TEXT_TEST") == "false" or os.getenv("TEXT_TEST") == None or len(os.getenv("TEXT_TEST").strip()) == 0:
+if textTest:
     # live
     link = "https://www.ontario.ca/page/2024-ontario-immigrant-nominee-program-updates"
     res = requests.get(link).text
@@ -49,17 +50,30 @@ if currentSystemDate == latestDrawDate:
         messageBody+="\n"
     
     #remove trailing "\n" if any
-    messageBody = messageBody[:-1]
+    while messageBody[-1] == "\n":
+        messageBody = messageBody[:-1]
     if debug: print(messageBody)
 
-    for number in numbers:
+    if textTest:
         message = client.messages.create(
             body=messageBody,
             from_=os.getenv("FROM_NUMBER"),
-            to=number,
+            to=os.getenv("KUSHAGRA_NUMBER"),
         )
         if debug:
-            print("Log for sending to", number)
+            print("Log for sending to", "KUSHAGRA_NUMBER")
             print(message.body)
+    else:
+        for person in recipients:
+            personNumber = os.getenv(person)
+            if not (len(personNumber.strip()) == 0 or personNumber == None):
+                message = client.messages.create(
+                    body=messageBody,
+                    from_=os.getenv("FROM_NUMBER"),
+                    to=personNumber,
+                )
+                if debug:
+                    print("Log for sending to", person)
+                    print(message.body)
 else:
     print("There is no current draw")

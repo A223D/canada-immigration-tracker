@@ -24,21 +24,21 @@ jobs:
     poller:
         runs-on: ubuntu-latest
         steps:
-            - name: Setting Up Environment 🖥️
-              run: echo "Starting announcer Job"
             - name: Trying to install python 🐍
               uses: actions/setup-python@v3
             - name: Checkout main branch code 🧬
               uses: actions/checkout@v4
               with:
                 ref: main
-            - name: Install requirements for python
+            - name: Setting Up Environment 🖥️
               run: pip install -r requirements.txt
-            - name: Running the parsing script 🛠️
+            - name: Running the scraper 🛠️
               run: python ./scraper.py
               env:
                 TWILIO_ACCOUNT_SID: ${{secrets.TWILIO_ACCOUNT_SID}}
                 TWILIO_AUTH_TOKEN: ${{secrets.TWILIO_AUTH_TOKEN}}
                 KUSHAGRA_NUMBER: ${{secrets.KUSHAGRA_NUMBER}}
+                MAHAK_NUMBER: ${{secrets.MAHAK_NUMBER}}
+                CHIRAG_NUMBER: ${{secrets.CHIRAG_NUMBER}}
                 FROM_NUMBER: ${{secrets.FROM_NUMBER}}
                 TEXT_TEST: ${{inputs.textBasedTest}}
