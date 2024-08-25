@@ -87,6 +87,9 @@ if currentSystemDate == latestDrawDate:
             f = open(os.path.join("./", currentSystemDate + "-" + "OINP" + ".txt"))
             f.write(messageBody)
             f.close()
+            githubOutputObjectFile = open(os.environ["GITHUB_OUTPUT"], 'a')
+            githubOutputObjectFile.write("newPush=true\n")
+            githubOutputObjectFile.close()
             #now sending announcements
             for person in recipients:
                 personNumber = os.getenv(person)

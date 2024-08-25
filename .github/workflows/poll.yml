@@ -29,17 +29,30 @@ jobs:
             - name: Setting Up Environment 🖥️
               run: sudo apt-get install google-chrome-stable && pip install -r requirements.txt
             #insert OINP scraper here
-
+            - name: Running the OINP scraper 🛠️
+              id: oinpscraper
+              run: python ./oinpscraper.py
+              env:
+                TWILIO_ACCOUNT_SID: ${{secrets.TWILIO_ACCOUNT_SID}}
+                TWILIO_AUTH_TOKEN: ${{secrets.TWILIO_AUTH_TOKEN}}
+                KUSHAGRA_NUMBER: ${{secrets.KUSHAGRA_NUMBER}}
+                MAHAK_NUMBER: ${{secrets.MAHAK_NUMBER}}
+                CHIRAG_NUMBER: ${{secrets.CHIRAG_NUMBER}}
+                FROM_NUMBER: ${{secrets.FROM_NUMBER}}
+                TEXT_TEST: ${{inputs.textBasedTest}}
+            #insert EE scraper
             - name: Running the EE scraper 🛠️
+              id: eescraper
               run: python ./eescraper.py
               env:
                 TWILIO_ACCOUNT_SID: ${{secrets.TWILIO_ACCOUNT_SID}}
                 TWILIO_AUTH_TOKEN: ${{secrets.TWILIO_AUTH_TOKEN}}
                 KUSHAGRA_NUMBER: ${{secrets.KUSHAGRA_NUMBER}}
+                MAHAK_NUMBER: ${{secrets.MAHAK_NUMBER}}
+                CHIRAG_NUMBER: ${{secrets.CHIRAG_NUMBER}}
                 FROM_NUMBER: ${{secrets.FROM_NUMBER}}
                 TEXT_TEST: ${{inputs.textBasedTest}}
             #now that files have been created commit and push to the main repo
-
             #only do this if it is not a test
             - name: Saving announcement for future
               run: |
@@ -49,4 +62,4 @@ jobs:
                 git add .
                 git commit -m "Saving announcement"
                 git push
-              if: ${{inputs.textBasedTest == 'true'}}
+              if: ${{steps.eescraper.outputs.newPush == 'true' || steps.oinpscraper.outputs.newPush == 'true'}}
