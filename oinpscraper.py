@@ -25,6 +25,11 @@ debug = True
 textTest = True
 if os.getenv("TEXT_TEST") == "false" or os.getenv("TEXT_TEST") == None or len(os.getenv("TEXT_TEST").strip()) == 0:
     textTest = False
+
+sendTo = "Kushagra"
+if os.getenv("SEND_TO") == "All" or os.getenv("SEND_TO") == None or len(os.getenv("SEND_TO").strip()) == 0:
+    sendTo = "All"
+
 recipients = ["KUSHAGRA_NUMBER", "MAHAK_NUMBER", "CHIRAG_SETHI_NUMBER"]
 
 if debug: print("I got", os.getenv("TEXT_TEST"), "as text test")
@@ -71,7 +76,7 @@ if currentSystemDate == latestDrawDate:
         messageBody = messageBody[:-1]
     if debug: print(messageBody)
 
-    if textTest:
+    if sendTo == "Kushagra":
         message = client.messages.create(
             body=messageBody,
             from_=os.getenv("FROM_NUMBER"),
@@ -80,7 +85,7 @@ if currentSystemDate == latestDrawDate:
         if debug:
             print("Log for sending to", "KUSHAGRA_NUMBER")
             print(message.body)
-    else:
+    elif sendTo == "All":
         #check if this is already sent or not
         if not alreadySent(messageBody, currentSystemDate, "OINP"):
             #create the file to record the messageBody

@@ -12,6 +12,14 @@ on:
           required: true
           default: false
           type: boolean
+        sendTo:
+          description: "Sending SMS to whom?"
+          required: true
+          default: Kushagra
+          type: choice
+          options:
+            - Kushagra
+            - All
 
 permissions:
   contents: write
@@ -40,6 +48,7 @@ jobs:
                 CHIRAG_NUMBER: ${{secrets.CHIRAG_NUMBER}}
                 FROM_NUMBER: ${{secrets.FROM_NUMBER}}
                 TEXT_TEST: ${{inputs.textBasedTest}}
+                SEND_TO: ${{inputs.sendTo}}
             #insert EE scraper
             - name: Running the EE scraper 🛠️
               id: eescraper
@@ -52,6 +61,7 @@ jobs:
                 CHIRAG_NUMBER: ${{secrets.CHIRAG_NUMBER}}
                 FROM_NUMBER: ${{secrets.FROM_NUMBER}}
                 TEXT_TEST: ${{inputs.textBasedTest}}
+                SEND_TO: ${{inputs.sendTo}}
             #now that files have been created commit and push to the main repo
             #only do this if it is not a test
             - name: Saving announcement for future
