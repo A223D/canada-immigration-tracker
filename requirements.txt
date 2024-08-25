@@ -2,3 +2,4 @@ python-dotenv
 beautifulsoup4
 twilio
 requests
+selenium

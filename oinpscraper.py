@@ -4,16 +4,33 @@ from dotenv import load_dotenv, dotenv_values
 from bs4 import BeautifulSoup, element
 from datetime import datetime
 from twilio.rest import Client
-debug = True
-load_dotenv()
-textTest = os.getenv("TEXT_TEST") == "false" or os.getenv("TEXT_TEST") == None or len(os.getenv("TEXT_TEST").strip()) == 0
+from time import sleep
 
+def alreadySent(messageBody, dateString, typeString):
+    if not os.path.isfile(os.path.join("./", dateString + "-" + typeString + ".txt")):
+        return False
+    else:
+        f = open(os.path.join("./", dateString + "-" + typeString + ".txt"), "r")
+        compareTo = f.read()
+        f.close()
+        if compareTo == messageBody:
+            return True
+        else:
+            return False
+
+debug = True
+
+# load_dotenv()
+
+textTest = True
+if os.getenv("TEXT_TEST") == "false" or os.getenv("TEXT_TEST") == None or len(os.getenv("TEXT_TEST").strip()) == 0:
+    textTest = False
 recipients = ["KUSHAGRA_NUMBER", "MAHAK_NUMBER", "CHIRAG_SETHI_NUMBER"]
 
 if debug: print("I got", os.getenv("TEXT_TEST"), "as text test")
 if debug: print("I got type of text test as ", type(os.getenv("TEXT_TEST")))
 
-if textTest:
+if not textTest:
     # live
     link = "https://www.ontario.ca/page/2024-ontario-immigrant-nominee-program-updates"
     res = requests.get(link).text
@@ -35,7 +52,7 @@ if debug: print("current system date:", currentSystemDate)
 
 #think about how to alert
 if currentSystemDate == latestDrawDate:
-    messageBody="An OINP Draw occurred.\n"
+    messageBody="🚨🚨OINP Draw Alert🚨🚨\n"
     account_sid = os.environ["TWILIO_ACCOUNT_SID"]
     auth_token = os.environ["TWILIO_AUTH_TOKEN"]
     client = Client(account_sid, auth_token)
@@ -64,16 +81,26 @@ if currentSystemDate == latestDrawDate:
             print("Log for sending to", "KUSHAGRA_NUMBER")
             print(message.body)
     else:
-        for person in recipients:
-            personNumber = os.getenv(person)
-            if not (len(personNumber.strip()) == 0 or personNumber == None):
-                message = client.messages.create(
-                    body=messageBody,
-                    from_=os.getenv("FROM_NUMBER"),
-                    to=personNumber,
-                )
-                if debug:
-                    print("Log for sending to", person)
-                    print(message.body)
+        #check if this is already sent or not
+        if not alreadySent(messageBody, currentSystemDate, "OINP"):
+            #create the file to record the messageBody
+            f = open(os.path.join("./", currentSystemDate + "-" + "OINP" + ".txt"))
+            f.write(messageBody)
+            f.close()
+            #now sending announcements
+            for person in recipients:
+                personNumber = os.getenv(person)
+                if not (len(personNumber.strip()) == 0 or personNumber == None):
+                    message = client.messages.create(
+                        body=messageBody,
+                        from_=os.getenv("FROM_NUMBER"),
+                        to=personNumber,
+                    )
+                    if debug:
+                        print("Log for sending to", person)
+                        print(message.body)
+                    sleep(1)
+        else:
+            if debug: print("This is a repeat scrape")
 else:
     print("There is no current draw")
