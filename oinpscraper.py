@@ -77,6 +77,7 @@ if currentSystemDate == latestDrawDate:
     if debug: print(messageBody)
 
     if sendTo == "Kushagra":
+        if debug: print("Sending only to Kushagra")
         message = client.messages.create(
             body=messageBody,
             from_=os.getenv("FROM_NUMBER"),
@@ -89,6 +90,7 @@ if currentSystemDate == latestDrawDate:
         #check if this is already sent or not
         if not alreadySent(messageBody, currentSystemDate, "OINP"):
             #create the file to record the messageBody
+            if debug: print("Sending messages to all")
             f = open(os.path.join("./", currentSystemDate + "-" + "OINP" + ".txt"))
             f.write(messageBody)
             f.close()

@@ -45,7 +45,7 @@ jobs:
                 TWILIO_AUTH_TOKEN: ${{secrets.TWILIO_AUTH_TOKEN}}
                 KUSHAGRA_NUMBER: ${{secrets.KUSHAGRA_NUMBER}}
                 MAHAK_NUMBER: ${{secrets.MAHAK_NUMBER}}
-                CHIRAG_NUMBER: ${{secrets.CHIRAG_NUMBER}}
+                CHIRAG_SETHI_NUMBER: ${{secrets.CHIRAG_SETHI_NUMBER}}
                 FROM_NUMBER: ${{secrets.FROM_NUMBER}}
                 TEXT_TEST: ${{inputs.textBasedTest}}
                 SEND_TO: ${{inputs.sendTo}}
@@ -58,7 +58,7 @@ jobs:
                 TWILIO_AUTH_TOKEN: ${{secrets.TWILIO_AUTH_TOKEN}}
                 KUSHAGRA_NUMBER: ${{secrets.KUSHAGRA_NUMBER}}
                 MAHAK_NUMBER: ${{secrets.MAHAK_NUMBER}}
-                CHIRAG_NUMBER: ${{secrets.CHIRAG_NUMBER}}
+                CHIRAG_SETHI_NUMBER: ${{secrets.CHIRAG_SETHI_NUMBER}}
                 FROM_NUMBER: ${{secrets.FROM_NUMBER}}
                 TEXT_TEST: ${{inputs.textBasedTest}}
                 SEND_TO: ${{inputs.sendTo}}
