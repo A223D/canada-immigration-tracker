@@ -91,7 +91,7 @@ if currentSystemDate == latestDrawDate:
         if not alreadySent(messageBody, currentSystemDate, "OINP"):
             #create the file to record the messageBody
             if debug: print("Sending messages to all")
-            f = open(os.path.join("./", currentSystemDate + "-" + "OINP" + ".txt"))
+            f = open(os.path.join("./", currentSystemDate + "-" + "OINP" + ".txt"), "w")
             f.write(messageBody)
             f.close()
             githubOutputObjectFile = open(os.environ["GITHUB_OUTPUT"], 'a')
