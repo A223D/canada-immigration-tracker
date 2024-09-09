@@ -39,15 +39,13 @@ This repository contains Python scripts for scraping immigration draw updates fo
     pip install requests beautifulsoup4 python-dotenv twilio selenium
     ```
 
-3. Set Up Environment Variables: Create a .env file in the root directory of the project with the following content:
+3. Set Up Environment Variables. Make sure to create the environment variables for recipient phone numbers and reference them in code. These variables are defined at the repository level on GitHub: Create a .env file in the root directory of the project with the following content:
 
     ```env
     TWILIO_ACCOUNT_SID=your_twilio_account_sid
     TWILIO_AUTH_TOKEN=your_twilio_auth_token
     FROM_NUMBER=your_twilio_phone_number
-    KUSHAGRA_NUMBER=recipient_phone_number
-    MAHAK_NUMBER=recipient_phone_number
-    CHIRAG_SETHI_NUMBER=recipient_phone_number
+    #create the environment variables for all recipients + add them to GitHub + reference them in code
     TEXT_TEST=true # set to 'false' for live mode
     SEND_TO=All # Options: "All" or "Just you"
     GITHUB_OUTPUT=path_to_github_output_file
