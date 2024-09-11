@@ -62,9 +62,23 @@ else:
     f = open("./prettyEE.txt", "r", encoding="utf-8")
     soup = BeautifulSoup(f.read(), 'html.parser')
     f.close()
+try:
+    latestDrawElement = soup.find_all("tr")[1]
+    latestDrawDate = latestDrawElement.find_all("td")[1].get_text().strip()
+except:
+    print("An error occurred reading the date")
+    print("Here is the latest Draw element")
+    print(latestDrawElement)
+    account_sid = os.environ["TWILIO_ACCOUNT_SID"]
+    auth_token = os.environ["TWILIO_AUTH_TOKEN"]
+    client = Client(account_sid, auth_token)
+    message = client.messages.create(
+        body="❌Some error occurred with EE scraper. Check github logs❌",
+        from_=os.getenv("FROM_NUMBER"),
+        to=os.getenv("KUSHAGRA_NUMBER"),
+    )
+    exit(0)
 
-latestDrawElement = soup.find_all("tr")[1]
-latestDrawDate = latestDrawElement.find_all("td")[1].get_text().strip()
 if debug: print("latest Draw Date from the site:", latestDrawDate)
 
 #checking against current date

@@ -48,8 +48,22 @@ else:
 
 
 soup = BeautifulSoup(res, 'html.parser')
-latestDrawElement = soup.find_all("h3")[0]
-latestDrawDate = latestDrawElement.get_text().strip()
+try:
+    latestDrawElement = soup.find_all("h3")[0]
+    latestDrawDate = latestDrawElement.get_text().strip()
+except:
+    print("An error occurred reading the date")
+    print("Here is the latest Draw element")
+    print(latestDrawElement)
+    account_sid = os.environ["TWILIO_ACCOUNT_SID"]
+    auth_token = os.environ["TWILIO_AUTH_TOKEN"]
+    client = Client(account_sid, auth_token)
+    message = client.messages.create(
+        body="❌Some error occurred with OINP scraper. Check github logs❌",
+        from_=os.getenv("FROM_NUMBER"),
+        to=os.getenv("KUSHAGRA_NUMBER"),
+    )
+    exit(0)
 if debug: print("latest Draw Date from the site:", latestDrawDate)
 
 #checking against current date
