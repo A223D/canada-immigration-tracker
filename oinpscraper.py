@@ -67,16 +67,17 @@ except:
 if debug: print("latest Draw Date from the site:", latestDrawDate)
 
 #checking against current date
-res = requests.get("http://worldtimeapi.org/api/timezone/America/Toronto")
-jsonData = json.loads(res.text)
-dateData = datetime.fromisoformat(jsonData['datetime'])
-currentSystemDate = dateData.strftime("%B %e, %Y").replace("  ", " ")
-if debug: print("current system date Full:", dateData)
-if debug: print("current system date:", currentSystemDate)
-if debug: print("latest Draw Date:", latestDrawDate)
+
 
 #think about how to alert
 try:
+    res = requests.get("http://worldtimeapi.org/api/timezone/America/Toronto")
+    jsonData = json.loads(res.text)
+    dateData = datetime.fromisoformat(jsonData['datetime'])
+    currentSystemDate = dateData.strftime("%B %e, %Y").replace("  ", " ")
+    if debug: print("current system date Full:", dateData)
+    if debug: print("current system date:", currentSystemDate)
+    if debug: print("latest Draw Date:", latestDrawDate)
     if currentSystemDate == latestDrawDate:
         messageBody="🚨🚨OINP Draw Alert🚨🚨\n"
         account_sid = os.environ["TWILIO_ACCOUNT_SID"]
@@ -139,6 +140,8 @@ try:
 except BaseException as e:
     print("An exception occurred")
     print(e)
+    print("World time data res:")
+    print(res.text)
     account_sid = os.environ["TWILIO_ACCOUNT_SID"]
     auth_token = os.environ["TWILIO_AUTH_TOKEN"]
     client = Client(account_sid, auth_token)
@@ -149,6 +152,8 @@ except BaseException as e:
     )
 except:
     print("Some other error occurred")
+    print("World time data res:")
+    print(res.text)
     account_sid = os.environ["TWILIO_ACCOUNT_SID"]
     auth_token = os.environ["TWILIO_AUTH_TOKEN"]
     client = Client(account_sid, auth_token)
