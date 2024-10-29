@@ -31,6 +31,17 @@ def cleanUpTextFiles(dateString):
             if "-EE.txt" in file or "-OINP.txt" in file:
                 os.remove(os.path.join("./", file))
 
+def generateError(messageBody):
+    account_sid = os.environ["TWILIO_ACCOUNT_SID"]
+    auth_token = os.environ["TWILIO_AUTH_TOKEN"]
+    client = Client(account_sid, auth_token)
+    message = client.messages.create(
+        body=messageBody,
+        from_=os.getenv("FROM_NUMBER"),
+        to=os.getenv("KUSHAGRA_NUMBER"),
+    )
+    exit(0)
+
 # load_dotenv()
 
 textTest = True
@@ -89,14 +100,28 @@ except:
 if debug: print("latest Draw Date from the site:", latestDrawDate)
 
 #checking against current date
+try:
+    print("Pinging API")
+    res = requests.get("http://worldtimeapi.org/api/timezone/America/Toronto")
+    print("Pinged API. Now reading JSON data")
+    jsonData = json.loads(res.text)
+    print("Reading date time from JSON data")
+    dateData = datetime.fromisoformat(jsonData['datetime'])
+    print("Creating currentSystemDate")
+    currentSystemDate = dateData.strftime("%B %e, %Y").replace("  ", " ")
+
+except Exception as e:
+    print("Error occurred with time data from API. Error below:")
+    print(e)
+    print("Response HTTP code:", res.status_code)
+    print("World time data res:")
+    print(res.text)
+    generateError("❌Error occurred in EE time data API ping. Check github logs❌")
+    exit(0)
 
 
 #think about how to alert
 try:
-    res = requests.get("http://worldtimeapi.org/api/timezone/America/Toronto")
-    jsonData = json.loads(res.text)
-    dateData = datetime.fromisoformat(jsonData['datetime'])
-    currentSystemDate = dateData.strftime("%B %e, %Y").replace("  ", " ")
     if debug: print("current system date Full:", dateData)
     if debug: print("current system date:", currentSystemDate)
     if debug: print("latest Draw Date:", latestDrawDate)
@@ -159,25 +184,7 @@ try:
 except BaseException as e:
     print("An exception occurred")
     print(e)
-    print("World time data res:")
-    print(res.text)
-    account_sid = os.environ["TWILIO_ACCOUNT_SID"]
-    auth_token = os.environ["TWILIO_AUTH_TOKEN"]
-    client = Client(account_sid, auth_token)
-    message = client.messages.create(
-        body="❌Some error occurred with EE scraper. Check github logs❌",
-        from_=os.getenv("FROM_NUMBER"),
-        to=os.getenv("KUSHAGRA_NUMBER"),
-    )
+    generateError("❌Some error occurred with EE scraper. Check github logs❌")
 except:
     print("Some other error occurred")
-    print("World time data res:")
-    print(res.text)
-    account_sid = os.environ["TWILIO_ACCOUNT_SID"]
-    auth_token = os.environ["TWILIO_AUTH_TOKEN"]
-    client = Client(account_sid, auth_token)
-    message = client.messages.create(
-        body="❌Some error occurred with EE scraper. Check github logs❌",
-        from_=os.getenv("FROM_NUMBER"),
-        to=os.getenv("KUSHAGRA_NUMBER"),
-    )
+    generateError("❌Some error occurred with EE scraper. Check github logs❌")
