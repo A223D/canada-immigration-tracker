@@ -11,7 +11,7 @@ def alreadySent(messageBody, dateString, typeString):
     if not os.path.isfile(os.path.join("./", dateString + "-" + typeString + ".txt")):
         return False
     else:
-        f = open(os.path.join("./", dateString + "-" + typeString + ".txt"), "r")
+        f = open(os.path.join("./", "pastData", dateString + "-" + typeString + ".txt"), "r")
         compareTo = f.read()
         f.close()
         if compareTo == messageBody:
@@ -138,7 +138,7 @@ try:
             if not alreadySent(messageBody, currentSystemDate, "OINP"):
                 #create the file to record the messageBody
                 if debug: print("Sending messages to all")
-                f = open(os.path.join("./", currentSystemDate + "-" + "OINP" + ".txt"), "w")
+                f = open(os.path.join("./", "pastData", currentSystemDate + "-" + "OINP" + ".txt"), "w")
                 f.write(messageBody)
                 f.close()
                 githubOutputObjectFile = open(os.environ["GITHUB_OUTPUT"], 'a')

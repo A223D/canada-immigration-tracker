@@ -14,7 +14,7 @@ def alreadySent(messageBody, dateString, typeString):
     if not os.path.isfile(os.path.join("./", dateString + "-" + typeString + ".txt")):
         return False
     else:
-        f = open(os.path.join("./", dateString + "-" + typeString + ".txt"), "r")
+        f = open(os.path.join("./", "pastData", dateString + "-" + typeString + ".txt"), "r")
         compareTo = f.read()
         f.close()
         if compareTo == messageBody:
@@ -25,11 +25,11 @@ def alreadySent(messageBody, dateString, typeString):
 debug = True
 
 def cleanUpTextFiles(dateString):
-    allFiles = os.listdir(os.path.join("./"))
+    allFiles = os.listdir(os.path.join("./pastData/"))
     for file in allFiles:
         if dateString not in file:
             if "-EE.txt" in file or "-OINP.txt" in file:
-                os.remove(os.path.join("./", file))
+                os.remove(os.path.join("./pastData", file))
 
 def generateError(messageBody):
     account_sid = os.environ["TWILIO_ACCOUNT_SID"]
@@ -157,7 +157,7 @@ try:
                 #create the file to record the messageBody
                 if debug: print("Sending messages to all")
                 cleanUpTextFiles(currentSystemDate)
-                f = open(os.path.join("./", currentSystemDate + "-" + "EE" + ".txt"), "w")
+                f = open(os.path.join("./", "pastData", currentSystemDate + "-" + "EE" + ".txt"), "w")
                 f.write(messageBody)
                 f.close()
                 githubOutputObjectFile = open(os.environ["GITHUB_OUTPUT"], 'a')
