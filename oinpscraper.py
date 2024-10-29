@@ -81,6 +81,8 @@ if debug: print("latest Draw Date from the site:", latestDrawDate)
 try:
     print("Pinging API")
     res = requests.get("http://worldtimeapi.org/api/timezone/America/Toronto")
+    print("Check status code:", res.status_code)
+    res.raise_for_status()
     print("Pinged API. Now reading JSON data")
     jsonData = json.loads(res.text)
     print("Reading date time from JSON data")
