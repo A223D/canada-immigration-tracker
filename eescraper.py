@@ -101,9 +101,16 @@ if debug: print("latest Draw Date from the site:", latestDrawDate)
 
 #checking against current date
 try:
-    print("Pinging API")
-    res = requests.get("http://worldtimeapi.org/api/timezone/America/Toronto")
-    print("Check status code:", res.status_code)
+    num = 0
+    while(num < 5):
+        print("Pinging API")
+        res = requests.get("https://worldtimeapi.org/api/timezone/America/Toronto")
+        print("Check status code:", res.status_code)
+        if(res.status_code == 200):
+            break
+        print("Got a bad error code. Waiting and trying again")
+        sleep(30)
+        num+=1
     res.raise_for_status()
     print("Pinged API. Now reading JSON data")
     jsonData = json.loads(res.text)
