@@ -52,7 +52,7 @@ sendTo = "Kushagra"
 if os.getenv("SEND_TO") == "All" or os.getenv("SEND_TO") == None or len(os.getenv("SEND_TO").strip()) == 0:
     sendTo = "All"
 
-recipients = ["KUSHAGRA_NUMBER", "MAHAK_NUMBER", "CHIRAG_SETHI_NUMBER"]
+recipients = ["KUSHAGRA_NUMBER", "MAHAK_NUMBER", "CHIRAG_SETHI_NUMBER", "RISHABH_NUMBER"]
 
 if debug: print("I got", os.getenv("TEXT_TEST"), "as text test")
 if debug: print("I got type of text test as ", type(os.getenv("TEXT_TEST")))

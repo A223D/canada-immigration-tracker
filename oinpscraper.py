@@ -42,14 +42,14 @@ sendTo = "Kushagra"
 if os.getenv("SEND_TO") == "All" or os.getenv("SEND_TO") == None or len(os.getenv("SEND_TO").strip()) == 0:
     sendTo = "All"
 
-recipients = ["KUSHAGRA_NUMBER", "MAHAK_NUMBER", "CHIRAG_SETHI_NUMBER"]
+recipients = ["KUSHAGRA_NUMBER", "MAHAK_NUMBER", "CHIRAG_SETHI_NUMBER", "RISHABH_NUMBER"]
 
 if debug: print("I got", os.getenv("TEXT_TEST"), "as text test")
 if debug: print("I got type of text test as ", type(os.getenv("TEXT_TEST")))
 
 if not textTest:
     # live
-    link = "https://www.ontario.ca/page/2024-ontario-immigrant-nominee-program-updates"
+    link = "https://www.ontario.ca/page/2025-ontario-immigrant-nominee-program-updates"
     res = requests.get(link).text
 else:
     #test
